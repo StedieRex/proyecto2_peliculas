@@ -6,8 +6,10 @@ export default function SearchBar({ onSearch }) {
   const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
   const handleSearch = () => {
-    if (onSearch) onSearch(query);
-    setBusquedaRealizada(true);
+    if (query.trim().length > 0) {
+      if (onSearch) onSearch(query);
+      setBusquedaRealizada(true);
+    }
   };
 
   // Estilos para centrar el contenido en la pantalla o fijarlo arriba
@@ -21,8 +23,8 @@ export default function SearchBar({ onSearch }) {
     background: "#fff", // background para ver el espacio utilizado
     transition: "all 0.7s cubic-bezier(0.4,0,0.2,1)",
     paddingTop: busquedaRealizada ? "40px" : "0",
-    // Usamos translateY para animar el movimiento vertical
-    transform: busquedaRealizada ? "translateY(1vh)" : "translateY(50vh)"
+    // Solo aplica la transición si hay texto y se presionó buscar
+    transform: busquedaRealizada && query.trim().length > 0 ? "translateY(1vh)" : "translateY(50vh)"
   };
 
   const contenedorBuscador = {

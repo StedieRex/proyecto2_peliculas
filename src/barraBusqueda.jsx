@@ -8,34 +8,43 @@ export default function SearchBar({ onSearch }) {
     if (onSearch) onSearch(query);
   };
 
-  const estilosPadre ={
-    width: "70%",
-    height: "40px"
-  }
 
+  // Estilos para centrar el contenido en la pantalla
+  const estilosPadre = {
+    width: "100vw",
+    height: "100vh",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#fff"
+  };
   const contenedorBuscador ={
-    width: "100%",
+    width: "90%",
+    height: "40px",
+  }
+  const estiloBuscador ={
+    width: "90%",
     height: "40px",
     borderRadius: "30px"
   }
 
   return (
-    <div className="p-6" style={estilosPadre}>
-      <div className="flex items-center border border-gray-300 rounded-md px-3 py-2">
+    <div style={estilosPadre}>
+      <div className="hijo" style={contenedorBuscador}>
         <input
           type="text"
           placeholder="Buscar..."
-          className="flex-1 outline-none bg-transparent text-sm"
+          className="flex-1 outline-none bg-transparent text-lg px-2"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          style={contenedorBuscador}
+          style={estiloBuscador}
         />
 
         {/* Clear button */}
         {query && (
           <button
             aria-label="Limpiar búsqueda"
-            className="ml-2 text-sm opacity-70 hover:opacity-100"
+            className="ml-2"
             onClick={() => setQuery("")}
             type="button"
           >
@@ -46,7 +55,7 @@ export default function SearchBar({ onSearch }) {
         {/* Search confirm button */}
         <button
           aria-label="Buscar"
-          className="ml-2 px-3 py-1 rounded-md text-sm hover:bg-gray-100"
+          className="ml-2 px-4 py-2 rounded-full bg-blue-500 text-white text-base font-medium hover:bg-blue-600 transition-colors"
           onClick={handleSearch}
           type="button"
         >

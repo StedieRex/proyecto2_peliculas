@@ -3,30 +3,37 @@ import React, { useState } from "react";
 
 export default function SearchBar({ onSearch }) {
   const [query, setQuery] = useState("");
+  const [busquedaRealizada, setBusquedaRealizada] = useState(false);
 
   const handleSearch = () => {
     if (onSearch) onSearch(query);
+    setBusquedaRealizada(true);
   };
 
-
-  // Estilos para centrar el contenido en la pantalla
+  // Estilos para centrar el contenido en la pantalla o fijarlo arriba
+  // Transición suave usando transform y transition
   const estilosPadre = {
     width: "100vw",
-    height: "100vh",
+    height: "10vh",
     display: "flex",
-    alignItems: "center",
+    alignItems: busquedaRealizada ? "flex-start" : "center",
     justifyContent: "center",
-    background: "#fff"
+    background: "#fff", // background para ver el espacio utilizado
+    transition: "all 0.7s cubic-bezier(0.4,0,0.2,1)",
+    paddingTop: busquedaRealizada ? "40px" : "0",
+    // Usamos translateY para animar el movimiento vertical
+    transform: busquedaRealizada ? "translateY(1vh)" : "translateY(50vh)"
   };
-  const contenedorBuscador ={
+
+  const contenedorBuscador = {
     width: "90%",
     height: "40px",
-  }
-  const estiloBuscador ={
+  };
+  const estiloBuscador = {
     width: "90%",
     height: "40px",
     borderRadius: "30px"
-  }
+  };
 
   return (
     <div style={estilosPadre}>

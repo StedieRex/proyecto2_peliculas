@@ -12,63 +12,149 @@ export default function SearchBar({ onSearch }) {
     }
   };
 
-  // Estilos para centrar el contenido en la pantalla o fijarlo arriba
-  // Transición suave usando transform y transition
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
+  const handleClear = () => {
+    setQuery("");
+    setBusquedaRealizada(false);
+    // Opcional: limpiar resultados de búsqueda si es necesario
+    // if (onSearch) onSearch("");
+  };
+
+  // Estilos mejorados con fondo transparente
   const estilosPadre = {
     width: "100vw",
-    height: "10vh",
+    height: "15vh", // Más altura para mejor espaciado
     display: "flex",
     alignItems: busquedaRealizada ? "flex-start" : "center",
     justifyContent: "center",
-    background: "#fff", // background para ver el espacio utilizado
+    background: "transparent", // Fondo transparente
     transition: "all 0.7s cubic-bezier(0.4,0,0.2,1)",
-    paddingTop: busquedaRealizada ? "40px" : "0",
-    // Solo aplica la transición si hay texto y se presionó buscar
-    transform: busquedaRealizada && query.trim().length > 0 ? "translateY(1vh)" : "translateY(50vh)"
+    paddingTop: busquedaRealizada ? "60px" : "0", // Más padding cuando hay búsqueda
+    transform: busquedaRealizada && query.trim().length > 0 ? "translateY(2vh)" : "translateY(50vh)",
+    marginBottom: "20px"
   };
 
   const contenedorBuscador = {
     width: "90%",
-    height: "40px",
+    maxWidth: "700px", // Un poco más ancho
+    display: "flex",
+    alignItems: "center",
+    gap: "15px",
+    position: "relative"
   };
+
   const estiloBuscador = {
-    width: "90%",
-    height: "40px",
-    borderRadius: "30px"
+    flex: 1,
+    height: "55px", // Un poco más alto
+    borderRadius: "30px",
+    border: "2px solid #e0e0e0",
+    outline: "none",
+    padding: "0 25px", // Más padding interno
+    fontSize: "16px",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    boxShadow: "0 2px 15px rgba(0,0,0,0.1)",
+    transition: "all 0.3s ease",
+    paddingRight: "80px" // Espacio extra a la derecha para el botón de limpiar
+  };
+
+  const botonBusqueda = {
+    height: "55px",
+    padding: "0 30px",
+    borderRadius: "30px",
+    border: "none",
+    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    color: "white",
+    fontSize: "16px",
+    fontWeight: "600",
+    cursor: "pointer",
+    boxShadow: "0 3px 15px rgba(0,0,0,0.2)",
+    transition: "all 0.3s ease",
+    minWidth: "120px"
+  };
+
+  const botonLimpiar = {
+    position: "absolute",
+    right: "169px", // Más espacio desde el botón de búsqueda
+    background: "rgba(0, 0, 0, 0.1)",
+    border: "none",
+    fontSize: "18px",
+    cursor: "pointer",
+    color: "#666",
+    width: "35px", // Más grande
+    height: "35px",
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "all 0.3s ease",
+    zIndex: 10 // Para asegurar que esté por encima
   };
 
   return (
     <div style={estilosPadre}>
-      <div className="hijo" style={contenedorBuscador}>
+      <div style={contenedorBuscador}>
         <input
           type="text"
           placeholder="Buscar..."
-          className="flex-1 outline-none bg-transparent text-lg px-2"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyDown}
           style={estiloBuscador}
+          onFocus={(e) => {
+            e.target.style.boxShadow = "0 4px 20px rgba(0,0,0,0.15)";
+            e.target.style.borderColor = "#667eea";
+            e.target.style.transform = "scale(1.02)";
+            e.target.style.backgroundColor = "rgba(255, 255, 255, 1)";
+          }}
+          onBlur={(e) => {
+            e.target.style.boxShadow = "0 2px 15px rgba(0,0,0,0.1)";
+            e.target.style.borderColor = "#e0e0e0";
+            e.target.style.transform = "scale(1)";
+            e.target.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+          }}
         />
 
-        {/* Clear button */}
         {query && (
           <button
             aria-label="Limpiar búsqueda"
-            className="ml-2"
-            onClick={() => setQuery("")}
+            onClick={handleClear}
+            style={botonLimpiar}
             type="button"
+            onMouseEnter={(e) => {
+              e.target.style.background = "rgba(0, 0, 0, 0.2)";
+              e.target.style.color = "#333";
+              e.target.style.transform = "scale(1.1)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = "rgba(0, 0, 0, 0.1)";
+              e.target.style.color = "#666";
+              e.target.style.transform = "scale(1)";
+            }}
           >
             ✕
           </button>
         )}
 
-        {/* Search confirm button */}
         <button
           aria-label="Buscar"
-          className="ml-2 px-4 py-2 rounded-full bg-blue-500 text-white text-base font-medium hover:bg-blue-600 transition-colors"
           onClick={handleSearch}
+          style={botonBusqueda}
           type="button"
+          onMouseEnter={(e) => {
+            e.target.style.transform = "scale(1.05)";
+            e.target.style.boxShadow = "0 5px 20px rgba(0,0,0,0.3)";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.transform = "scale(1)";
+            e.target.style.boxShadow = "0 3px 15px rgba(0,0,0,0.2)";
+          }}
         >
-          Buscar
+          🔍 Buscar
         </button>
       </div>
     </div>

@@ -1,14 +1,19 @@
-// SearchBar.jsx
-import React, { useState } from "react";
+// barraBusqueda.jsx
+import React, { useState, useEffect } from "react";
 
-export default function SearchBar({ onSearch }) {
+export default function SearchBar({ onSearch, searchPerformed }) {
   const [query, setQuery] = useState("");
-  const [busquedaRealizada, setBusquedaRealizada] = useState(false);
+  const [localSearchPerformed, setLocalSearchPerformed] = useState(false);
+
+  // Sincronizar con la prop searchPerformed del padre
+  useEffect(() => {
+    setLocalSearchPerformed(searchPerformed);
+  }, [searchPerformed]);
 
   const handleSearch = () => {
     if (query.trim().length > 0) {
       if (onSearch) onSearch(query);
-      setBusquedaRealizada(true);
+      setLocalSearchPerformed(true);
     }
   };
 
@@ -20,28 +25,29 @@ export default function SearchBar({ onSearch }) {
 
   const handleClear = () => {
     setQuery("");
-    setBusquedaRealizada(false);
-    // Opcional: limpiar resultados de búsqueda si es necesario
-    // if (onSearch) onSearch("");
+    setLocalSearchPerformed(false);
+    if (onSearch) onSearch(""); // Limpiar la búsqueda en el padre
   };
 
-  // Estilos mejorados con fondo transparente
+  // Estilos - La barra siempre en la parte superior cuando hay búsqueda
   const estilosPadre = {
     width: "100vw",
-    height: "15vh", // Más altura para mejor espaciado
+    height: "15vh",
     display: "flex",
-    alignItems: busquedaRealizada ? "flex-start" : "center",
+    alignItems: localSearchPerformed ? "flex-start" : "center",
     justifyContent: "center",
-    background: "transparent", // Fondo transparente
-    transition: "all 0.7s cubic-bezier(0.4,0,0.2,1)",
-    paddingTop: busquedaRealizada ? "60px" : "0", // Más padding cuando hay búsqueda
-    transform: busquedaRealizada && query.trim().length > 0 ? "translateY(2vh)" : "translateY(50vh)",
-    marginBottom: "20px"
+    background: "transparent",
+    transition: "all 0.5s ease-in-out",
+    paddingTop: localSearchPerformed ? "40px" : "0",
+    transform: localSearchPerformed ? "translateY(0)" : "translateY(50vh)",
+    marginBottom: "20px",
+    position: "relative",
+    zIndex: 1001
   };
 
   const contenedorBuscador = {
     width: "90%",
-    maxWidth: "700px", // Un poco más ancho
+    maxWidth: "700px",
     display: "flex",
     alignItems: "center",
     gap: "15px",
@@ -50,16 +56,16 @@ export default function SearchBar({ onSearch }) {
 
   const estiloBuscador = {
     flex: 1,
-    height: "55px", // Un poco más alto
+    height: "55px",
     borderRadius: "30px",
     border: "2px solid #e0e0e0",
     outline: "none",
-    padding: "0 25px", // Más padding interno
+    padding: "0 25px",
+    paddingRight: "80px",
     fontSize: "16px",
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
     boxShadow: "0 2px 15px rgba(0,0,0,0.1)",
-    transition: "all 0.3s ease",
-    paddingRight: "80px" // Espacio extra a la derecha para el botón de limpiar
+    transition: "all 0.3s ease"
   };
 
   const botonBusqueda = {
@@ -79,20 +85,20 @@ export default function SearchBar({ onSearch }) {
 
   const botonLimpiar = {
     position: "absolute",
-    right: "169px", // Más espacio desde el botón de búsqueda
+    right: "140px",
     background: "rgba(0, 0, 0, 0.1)",
     border: "none",
     fontSize: "18px",
     cursor: "pointer",
     color: "#666",
-    width: "35px", // Más grande
+    width: "35px",
     height: "35px",
     borderRadius: "50%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     transition: "all 0.3s ease",
-    zIndex: 10 // Para asegurar que esté por encima
+    zIndex: 10
   };
 
   return (
@@ -100,7 +106,7 @@ export default function SearchBar({ onSearch }) {
       <div style={contenedorBuscador}>
         <input
           type="text"
-          placeholder="Buscar..."
+          placeholder="Buscar películas..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -109,13 +115,11 @@ export default function SearchBar({ onSearch }) {
             e.target.style.boxShadow = "0 4px 20px rgba(0,0,0,0.15)";
             e.target.style.borderColor = "#667eea";
             e.target.style.transform = "scale(1.02)";
-            e.target.style.backgroundColor = "rgba(255, 255, 255, 1)";
           }}
           onBlur={(e) => {
             e.target.style.boxShadow = "0 2px 15px rgba(0,0,0,0.1)";
             e.target.style.borderColor = "#e0e0e0";
             e.target.style.transform = "scale(1)";
-            e.target.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
           }}
         />
 

@@ -73,7 +73,7 @@ export default function SearchBar({ onSearch, searchPerformed }) {
     padding: "0 30px",
     borderRadius: "30px",
     border: "none",
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "linear-gradient(135deg, #ea9b66ff 0%, #a24b57ff 100%)",
     color: "white",
     fontSize: "16px",
     fontWeight: "600",
@@ -85,7 +85,7 @@ export default function SearchBar({ onSearch, searchPerformed }) {
 
   const botonLimpiar = {
     position: "absolute",
-    right: "140px",
+    right: "169px",
     background: "rgba(0, 0, 0, 0.1)",
     border: "none",
     fontSize: "18px",
